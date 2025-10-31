@@ -1,6 +1,4 @@
-# AWVDT
-Aplicación Web Vulnerable Directory Transversal
-
+<pre style="white-space: pre; overflow-x: auto; font-family: monospace;">
 gym-supplements-shop/
 │
 ├── app.py                          # ⚠️ Aplicación Flask VULNERABLE 
@@ -36,12 +34,15 @@ gym-supplements-shop/
 │   ├── factura02.pdf               # Factura de ejemplo 2
 │   ├── factura03.pdf               # Factura de ejemplo 3
 │   ├── factura04.pdf               # Factura de ejemplo 4
-│   └── factura03.pdf               # Factura de ejemplo 3
+│   └── factura05.pdf               # Factura de ejemplo 5
 │
 └── docs/                           # 📚 Documentación del proyecto
-    ├── README.md                   # Instrucciones generales
-    ├── PENTESTING.md               # Pruebas manuales
-    ├── EXPLOTACION.md              # Explotación automatizada 
-    ├── CORRECTIVOS.md              # Soluciones aplicadas 
-    ├── RETEST.md                   # Re-testing post-corrección
-    └── INFORME_FINAL               # Reporte completo del proyecto 
+    ├── README                      # Instrucciones generales
+
+    Word 
+    ├── PENTESTING                  # Pruebas manuales
+    ├── EXPLOTACION                 # Explotación automatizada 
+    ├── CORRECTIVOS                 # Soluciones aplicadas 
+    ├── RETEST                      # Re-testing post-corrección
+    └── INFORME_FINAL               # Reporte completo del proyecto
+</pre>
