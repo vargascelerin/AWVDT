@@ -1,0 +1,139 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Tienda Demo - Vulnerable App</title>
+    <style>
+        * { margin: 0; padding: 0; box-sizing: border-box; }
+        body { 
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            min-height: 100vh;
+            padding: 20px;
+        }
+        .container {
+            max-width: 1200px;
+            margin: 0 auto;
+        }
+        h1 {
+            color: white;
+            text-align: center;
+            margin-bottom: 40px;
+            font-size: 2.5em;
+            text-shadow: 2px 2px 4px rgba(0,0,0,0.3);
+        }
+        .products-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+            gap: 30px;
+            margin-bottom: 40px;
+        }
+        .product-card {
+            background: white;
+            border-radius: 15px;
+            padding: 20px;
+            box-shadow: 0 10px 30px rgba(0,0,0,0.2);
+            transition: transform 0.3s;
+        }
+        .product-card:hover {
+            transform: translateY(-5px);
+        }
+        .product-card img {
+            width: 100%;
+            height: 200px;
+            object-fit: cover;
+            border-radius: 10px;
+            margin-bottom: 15px;
+        }
+        .product-card h3 {
+            color: #333;
+            margin-bottom: 10px;
+        }
+        .product-card .price {
+            color: #667eea;
+            font-size: 1.5em;
+            font-weight: bold;
+        }
+        .invoice-section {
+            background: white;
+            border-radius: 15px;
+            padding: 30px;
+            box-shadow: 0 10px 30px rgba(0,0,0,0.2);
+        }
+        .invoice-section h2 {
+            color: #333;
+            margin-bottom: 20px;
+        }
+        .invoice-list {
+            list-style: none;
+        }
+        .invoice-list li {
+            margin: 10px 0;
+        }
+        .invoice-list a {
+            color: #667eea;
+            text-decoration: none;
+            font-weight: 500;
+            padding: 10px 20px;
+            border: 2px solid #667eea;
+            border-radius: 8px;
+            display: inline-block;
+            transition: all 0.3s;
+        }
+        .invoice-list a:hover {
+            background: #667eea;
+            color: white;
+        }
+        .warning {
+            background: #fff3cd;
+            border-left: 4px solid #ffc107;
+            padding: 15px;
+            margin-top: 20px;
+            border-radius: 5px;
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <h1>🛒 Tienda Demo</h1>
+        
+        <div id="products" class="products-grid"></div>
+        
+        <div class="invoice-section">
+            <h2>📄 Descargar Facturas</h2>
+            <ul class="invoice-list">
+                <li><a href="/download-invoice?file=factura01.pdf">Factura 01</a></li>
+                <li><a href="/download-invoice?file=factura02.pdf">Factura 02</a></li>
+                <li><a href="/download-invoice?file=factura03.pdf">Factura 03</a></li>
+                <li><a href="/download-invoice?file=factura04.pdf">Factura 04</a></li>
+                <li><a href="/download-invoice?file=factura05.pdf">Factura 05</a></li>
+            </ul>
+            <div class="warning">
+                ⚠️ <strong>Advertencia:</strong> Esta es una aplicación vulnerable con fines educativos.
+                Intenta: <code>/download-invoice?file=../secreto.txt</code>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        // Cargar productos desde la API
+        fetch('/api/products')
+            .then(res => res.json())
+            .then(products => {
+                const container = document.getElementById('products');
+                products.forEach(product => {
+                    const card = document.createElement('div');
+                    card.className = 'product-card';
+                    card.innerHTML = `
+                        <img src="${product.image}" alt="${product.name}">
+                        <h3>${product.name}</h3>
+                        <p class="price">$${product.price}</p>
+                    `;
+                    container.appendChild(card);
+                });
+            })
+            .catch(err => console.error('Error cargando productos:', err));
+    </script>
+</body>
+</html>
