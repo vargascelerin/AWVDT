@@ -1,7 +1,7 @@
 <h1>Propuesta de diseño de la aplicacion vulnerable (es un ecommerce de tech)</h1>
 
 <pre style="white-space: pre; overflow-x: auto; font-family: monospace;">
-gym-supplements-shop/
+tech-shop/
 │
 ├── app.py                          # ⚠️ Aplicación Flask VULNERABLE 
 ├── app_seguro.py                   # ✅ Aplicación Flask parchada
