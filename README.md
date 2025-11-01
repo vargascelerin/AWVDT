@@ -1,4 +1,4 @@
-<h1>Propuesta de diseño de la aplicacion vulnerable (es un ecommerce de suplementos del gym)</h1>
+<h1>Propuesta de diseño de la aplicacion vulnerable (es un ecommerce de tech)</h1>
 
 <pre style="white-space: pre; overflow-x: auto; font-family: monospace;">
 gym-supplements-shop/
@@ -24,12 +24,12 @@ gym-supplements-shop/
 │   │
 │   └── images/
 │       └── products/               # Imágenes de productos
-│           ├── whey.jpg            # Proteína Whey
-│           ├── creatina.jpg        # Creatina
-│           ├── preworkout.jpg      # Pre-Workout
-│           ├── bcaa.jpg            # BCAA
-│           ├── multi.jpg           # Multivitamínico
-│           └── burner.jpg          # Quemador de grasa
+│           ├── Laptop.jpg          
+│           ├── Iphone.jpg       
+│           ├── audifonos.jpg      
+│           ├── monitor.jpg          
+│           ├── mouse.jpg           
+│           └── mac.jpg          
 │
 ├── invoices/                       # 📄 Facturas legítimas 
 │   ├── factura01.pdf               # Factura de ejemplo 1
