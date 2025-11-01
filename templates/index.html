@@ -95,6 +95,17 @@
     </style>
 </head>
 <body>
+    <h1>🛒 Tienda Demo 
+        <span id="cart-counter" style="
+            background: #ff4757; 
+            color: white; 
+            font-size: 0.8em; 
+            padding: 5px 10px; 
+            border-radius: 20px; 
+            margin-left: 10px;">
+            0
+        </span>
+    </h1>
     <div class="container">
         <h1>🛒 Tienda Demo</h1>
         
@@ -116,24 +127,9 @@
         </div>
     </div>
 
-    <script>
-        // Cargar productos desde la API
-        fetch('/api/products')
-            .then(res => res.json())
-            .then(products => {
-                const container = document.getElementById('products');
-                products.forEach(product => {
-                    const card = document.createElement('div');
-                    card.className = 'product-card';
-                    card.innerHTML = `
-                        <img src="${product.image}" alt="${product.name}">
-                        <h3>${product.name}</h3>
-                        <p class="price">$${product.price}</p>
-                    `;
-                    container.appendChild(card);
-                });
-            })
-            .catch(err => console.error('Error cargando productos:', err));
-    </script>
+    <!-- Contenedor de notificaciones -->
+    <div id="toast" class="toast"></div>
+
+    <script src="{{ url_for('static', filename='js/main.js') }}"></script>
 </body>
 </html>
