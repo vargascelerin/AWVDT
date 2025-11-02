@@ -47,6 +47,11 @@ PRODUCTS = [
 def index():
     """Ruta principal que renderiza el index.html"""
     return render_template('index.html')
+@app.route('/profile')
+def profile():
+    """Página de perfil que permite descargar facturas"""
+    return render_template('profile.html')
+
 
 @app.route('/api/products', methods=['GET'])
 def get_products():
