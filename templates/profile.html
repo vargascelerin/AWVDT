@@ -3,18 +3,91 @@
 {% block content %}
 <section class="profile">
     <h2>👤 Mi Perfil</h2>
-    <p>Descarga tus facturas fácilmente:</p>
-    <ul class="invoice-list">
-        {% for i in range(1,6) %}
-            <li><a href="/download-invoice?file=factura0{{ i }}.pdf">Factura 0{{ i }}</a></li>
-        {% endfor %}
-    </ul>
+    
+    <!-- Información del usuario (simulada/estática) -->
+    <div class="user-info">
+        <p><strong>Usuario:</strong> Juan Pérez</p>
+        <p><strong>Email:</strong> juan.perez@email.com</p>
+        <p><strong>Miembro desde:</strong> Enero 2025</p>
+    </div>
+
+    <hr style="margin: 30px 0; border: 1px solid #ddd;">
+
+    <div class="invoices-section">
+        <h3>📄 Mis Facturas</h3>
+        <p>Facturas disponibles para descargar:</p>
+        
+        <!-- Tabla de facturas disponibles -->
+        <table class="invoices-table">
+            <thead>
+                <tr>
+                    <th>Factura</th>
+                    <th>Fecha</th>
+                    <th>Monto</th>
+                    <th>Acción</th>
+                </tr>
+            </thead>
+            <tbody>
+                <tr>
+                    <td>factura01.pdf</td>
+                    <td>15/01/2025</td>
+                    <td>$1,299.99</td>
+                    <td><a href="/download-invoice?file=factura01.pdf" class="download-link">📥 Descargar</a></td>
+                </tr>
+                <tr>
+                    <td>factura02.pdf</td>
+                    <td>18/01/2025</td>
+                    <td>$999.99</td>
+                    <td><a href="/download-invoice?file=factura02.pdf" class="download-link">📥 Descargar</a></td>
+                </tr>
+                <tr>
+                    <td>factura03.pdf</td>
+                    <td>22/01/2025</td>
+                    <td>$399.99</td>
+                    <td><a href="/download-invoice?file=factura03.pdf" class="download-link">📥 Descargar</a></td>
+                </tr>
+                <tr>
+                    <td>factura04.pdf</td>
+                    <td>25/01/2025</td>
+                    <td>$549.99</td>
+                    <td><a href="/download-invoice?file=factura04.pdf" class="download-link">📥 Descargar</a></td>
+                </tr>
+                <tr>
+                    <td>factura05.pdf</td>
+                    <td>28/01/2025</td>
+                    <td>$99.99</td>
+                    <td><a href="/download-invoice?file=factura05.pdf" class="download-link">📥 Descargar</a></td>
+                </tr>
+            </tbody>
+        </table>
+
+        <hr style="margin: 30px 0; border: 1px solid #ddd;">
+
+   
+        <div class="custom-download">
+            <h4>🔍 Descargar factura específica:</h4>
+            <p style="font-size: 0.9em; color: #666; margin-bottom: 15px;">
+                Ingresa el nombre del archivo que deseas descargar
+            </p>
+            <div class="download-form">
+                <input 
+                    type="text" 
+                    id="file-input" 
+                    placeholder="Ejemplo: factura01.pdf"
+                    class="file-input"
+                >
+                <button id="download-btn" class="btn">📥 Descargar</button>
+            </div>
+        </div>
+    </div>
 </section>
+
+<script src="{{ url_for('static', filename='js/profile.js') }}"></script>
 {% endblock %}
 
 {% block footer %}
 <p style="color:#b71c1c; font-weight:bold;">
     ⚠️ Advertencia: Esta es una aplicación vulnerable con fines educativos.<br>
-    Intenta: <code>127.0.0.1:5000/download-invoice?file=../secreto.txt</code>
+    Intenta: <code>../secreto.txt</code> en el campo de descarga
 </p>
 {% endblock %}
