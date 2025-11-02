@@ -11,7 +11,8 @@ document.addEventListener('DOMContentLoaded', function() {
             fileInput.focus();
             return;
         }
-
+        
+        // NOTA: Intenta con: ../secreto.txt
         const downloadUrl = `/download-invoice?file=${encodeURIComponent(filename)}`;
 
         console.log(`📥 Descargando archivo: ${filename}`);
