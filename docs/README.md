@@ -33,7 +33,7 @@ return send_file(file_path)
 
 ### 3. *Estructura de Archivos*
 
-
+```
 flask-vulnerable-app/
 ├── app.py                 # Backend Flask
 ├── secreto.txt            # Archivo "secreto" en raíz (para probar exploit)
@@ -46,7 +46,7 @@ flask-vulnerable-app/
 ├── templates/
 │   └── index.html         # Frontend (opcional)
 └── README.md
-
+```
 
 ## 🚀 Instalación y Uso
 
