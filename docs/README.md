@@ -16,7 +16,7 @@ Esta es una aplicación Flask diseñada *intencionalmente con una vulnerabilidad
 
 ### Instalación
 
-bash
+
 #### Clonar repositorio o descargar el proyecto
 ```bash
 git clone https://github.com/vargascelerin/AWVDT.git
@@ -45,7 +45,9 @@ C:\> \path-to-venv\Scripts\activate.bat
 PS C:\> \path-to-venv\Scripts\activate.ps1
 ```
 5. Desactivar (dejar activado en este caso)
-``` deactivate ```
+```bash
+deactivate
+```
 *LINUX*
 1. Creación de entorno virtual
 ```bash
