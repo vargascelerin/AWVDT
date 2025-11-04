@@ -1,2 +1,6 @@
-README directorios AWVDT.md
-README-Issue1.md
+
+.venv/
+venv/
+
+app_seguro.py
+
