@@ -8,30 +8,59 @@ Esta es una aplicación Flask diseñada *intencionalmente con una vulnerabilidad
 
 *Esta aplicación contiene vulnerabilidades intencionales y NO debe usarse en producción.* Es únicamente para propósitos educativos y de demostración de seguridad.
 
-## 🎯 Lo que hicimos
+## 🚀 Instalación y Uso
 
-### 1. *Backend Flask con Endpoints Básicos*
-- GET / - Página principal (renderiza index.html)
-- GET /api/products - API que retorna 6 productos hardcodeados en JSON
-- GET /download-invoice?file=X - *Endpoint vulnerable* para descargar facturas
+### Requisitos
+- Python 3.7+
+- Flask
 
-### 2. *La Vulnerabilidad: Directory Traversal*
+### Instalación
 
-El endpoint /download-invoice está intencionalmente mal implementado:
-
-python
-# CÓDIGO VULNERABLE - NO USAR EN PRODUCCIÓN
-filename = request.args.get('file', '')
-file_path = os.path.join('invoices/', filename)
-return send_file(file_path)
+bash
+#### Clonar repositorio o descargar el proyecto
+``` git clone https://github.com/vargascelerin/AWVDT.git```
+#### Acceder a ruta
+``` cd flask-vulnerable-app ```
 
 
-*¿Qué está mal?*
-- No valida que el archivo solicitado esté dentro del directorio invoices/
-- No sanitiza el parámetro file recibido del usuario
-- Permite el uso de secuencias ../ para navegar hacia arriba en el sistema de archivos
+#### Instalar dependencias
+##### Entorno virtual
+*NOTA:* Lo más recomendable es usar un entorno virtual, se puede crear de la siguiente manera:
+*WINDOWS*
+1. Creación de entorno virtual
+```python -m venv C:\path-to-venv\```
+2. Activar entorno virtual
+  Usando ejecutable
+``` C:\> \path-to-venv\Scripts\activate.bat ```
+  Usando la PowerShell
+``` PS C:\> \path-to-venv\Scripts\activate.ps1 ```
+3. Desactivar (dejar activado en este caso)
+``` deactivate ```
+*LINUX*
+1. Creación de entorno virtual
+```python3 -m venv \path-to-venv\```
+2. Activar entorno virtual
+```source \path-to-venv\bin\activate ```
+3. Desactivar (dejar activado en este caso)
+```deactivate ```
 
-### 3. *Estructura de Archivos*
+##### Dependencias
+- *Flask*
+``` pip install flask ```
+
+### Ejecutar la aplicación
+
+En windows
+```python app.py```
+
+En linux
+```python3 app.py```
+
+La aplicación estará disponible en http://localhost:5000
+[Ver página web](https://localhost:5000)
+
+
+### *Estructura de Archivos*
 
 ```
 flask-vulnerable-app/
@@ -48,61 +77,95 @@ flask-vulnerable-app/
 └── README.md
 ```
 
-## 🚀 Instalación y Uso
 
-### Requisitos
-- Python 3.7+
-- Flask
+## 🎯 Lo que hicimos
 
-### Instalación
+### 1. *Backend Flask con Endpoints Básicos*
+- GET / - Página principal (renderiza index.html)
+- GET /api/products - API que retorna 6 productos hardcodeados en JSON
+- GET /download-invoice?file=X - *Endpoint vulnerable* para descargar facturas
 
-bash
-# Clonar o descargar el proyecto
-cd flask-vulnerable-app
+### 2. *La Vulnerabilidad: Directory Traversal*
 
-# Instalar dependencias
-pip install flask
+El endpoint /download-invoice está intencionalmente mal implementado:
 
-# Crear archivos de ejemplo
-echo "Esto es información confidencial!" > secreto.txt
-mkdir -p invoices
-touch invoices/factura01.pdf
-touch invoices/factura02.pdf
-touch invoices/factura03.pdf
-touch invoices/factura04.pdf
-touch invoices/factura05.pdf
+python
+# CÓDIGO VULNERABLE - NO USAR EN PRODUCCIÓN
+```javascript
+filename = request.args.get('file', '')
+file_path = os.path.join('invoices/', filename)
+return send_file(file_path)
+```
 
+*¿Qué está mal?*
+- No valida que el archivo solicitado esté dentro del directorio invoices/
+- No sanitiza el parámetro file recibido del usuario
+- Permite el uso de secuencias ../ para navegar hacia arriba en el sistema de archivos
 
-### Ejecutar la aplicación
-
-bash
-python app.py
-
-
-La aplicación estará disponible en http://localhost:5000
 
 ## 🔓 Demostración del Exploit
 
 ### Uso Normal (sin exploit)
 bash
 # Descargar una factura legítima
-curl "http://localhost:5000/download-invoice?file=factura01.pdf" -o factura01.pdf
+Con curl
+```curl "http://localhost:5000/download-invoice?file=factura01.pdf" -o factura01.pdf```
+[Enlace equivalente]("http://localhost:5000/download-invoice?file=factura01.pdf")
 
 
 ### Exploit: Directory Traversal
-bash
+
 # VULNERABILIDAD: Acceder al archivo secreto usando ../
-curl "http://localhost:5000/download-invoice?file=../secreto.txt" -o secreto_robado.txt
+Existe una ruta que devuelve cualquier archivo de la aplicación
+Con curl
+``` curl "http://localhost:5000/download-invoice?file=../secreto.txt" -o secreto_robado.txt```
+[Enlace equivalente]("http://localhost:5000/download-invoice?file=../secreto.txt")
 
-# También podría intentar acceder a archivos del sistema
-curl "http://localhost:5000/download-invoice?file=/etc/passwd"
 
-
-*¿Por qué funciona?*
-- El usuario envía file=../secreto.txt
-- Flask construye el path: invoices/../secreto.txt
-- Se resuelve a: secreto.txt (en la raíz)
+**¿Por qué funciona?**
+- El usuario envía `file=../secreto.txt`
+- Flask construye el path: `invoices/../secreto.txt`
+- Se resuelve a: `secreto.txt` (en la raíz)
 - El servidor envía el archivo sin validar
+
+# VULNERABILIDAD: Acceder a archivos por input mal sanitizado
+Existe un input mal sanitizado en `profile.js` que permite descargar cualquier archivo
+
+El código es **intencionalmente vulnerable** para demostrar esta vulnerabilidad común:
+
+**Código Vulnerable en `profile.js`:**
+```javascript
+// VULNERABLE: Construye URL directamente sin validación
+const downloadUrl = `/download-invoice?file=${encodeURIComponent(filename)}`;
+window.open(downloadUrl, '_blank');
+```
+**¿Cómo Explotar la Vulnerabilidad?**
+
+**Uso Normal (Esperado):**
+
+Input: factura01.pdf
+URL: /download-invoice?file=factura01.pdf
+Resultado: Descarga invoices/factura01.pdf
+
+**Exploit - Directory Traversal:**
+
+Input: ../secreto.txt
+URL: /download-invoice?file=../secreto.txt
+Resultado: Descarga el archivo secreto.txt de la raíz
+
+**Otros Exploits Posibles:**
+
+- `../secreto.txt` → Descarga archivo sensible
+- `../app.py` → Descarga código fuente
+- `../../requirements.txt` → Descarga dependencias
+
+**¿Por qué es vulnerable?**
+- No valida que el archivo esté dentro del directorio `invoices/`
+- No sanitiza el input del usuario
+- Permite secuencias `../` para navegar hacia arriba en directorios
+
+
+
 
 ## 📚 Conceptos de Seguridad
 
@@ -148,92 +211,4 @@ Este proyecto demuestra:
 
 *Recuerda*: Esta aplicación es vulnerable por diseño. Úsala solo en entornos de prueba aislados y nunca en producción.
 
-# Issue #4 - Página de Perfil con Descarga de Facturas Vulnerable
 
-## Descripción del Issue
-
-Crear la página de perfil del usuario con una sección de descarga de facturas que expone intencionalmente la vulnerabilidad de **Directory Traversal** con fines educativos.
-
-## Objetivo
-
-Implementar una interfaz funcional e intuitiva que permita a los usuarios descargar sus facturas, pero que contenga una vulnerabilidad explotable para demostrar cómo un atacante puede acceder a archivos fuera del directorio permitido.
-
-## Tareas Completadas
-
-### 1. **HTML en `profile.html`**
-
-- Información de usuario simulada/estática (nombre, email, fecha de membresía)
-- Tabla completa con las 5 facturas disponibles
-- Input de texto para nombre de archivo personalizado
-- Botón de descarga funcional
-- Interfaz responsive y profesional
-
-### 2. **JavaScript en `static/js/profile.js`**
-
-- Event listener del botón de descarga
-- Construcción de URL vulnerable: `/download-invoice?file=` + input del usuario
-- Apertura de URL en nueva pestaña para descargar
-- Validación básica de input vacío
-- Soporte para descarga con tecla Enter
-- Comentarios detallados con pistas del exploit
-
-### 3. **CSS en `static/css/styles.css`**
-
-- Estilos para información de usuario
-- Tabla de facturas profesional y responsive
-- Sección de descarga personalizada destacada
-- Efectos hover y transiciones
-- Diseño mobile-friendly
-
-## Vulnerabilidad Implementada
-
-### **Directory Traversal (Path Traversal)**
-
-El código es **intencionalmente vulnerable** para demostrar esta vulnerabilidad común:
-
-**Código Vulnerable en `profile.js`:**
-```javascript
-// VULNERABLE: Construye URL directamente sin validación
-const downloadUrl = `/download-invoice?file=${encodeURIComponent(filename)}`;
-window.open(downloadUrl, '_blank');
-```
-
-**¿Por qué es vulnerable?**
-- No valida que el archivo esté dentro del directorio `invoices/`
-- No sanitiza el input del usuario
-- Permite secuencias `../` para navegar hacia arriba en directorios
-
-### **Cómo Explotar la Vulnerabilidad**
-
-#### Uso Normal (Esperado):
-
-Input: factura01.pdf
-URL: /download-invoice?file=factura01.pdf
-Resultado: Descarga invoices/factura01.pdf
-
-#### Exploit - Directory Traversal:
-
-Input: ../secreto.txt
-URL: /download-invoice?file=../secreto.txt
-Resultado: Descarga el archivo secreto.txt de la raíz
-
-#### Otros Exploits Posibles:
-
-../app.py                    → Descarga el código fuente
-../../requirements.txt       → Descarga dependencias
-../templates/base.html       → Descarga templates
-
-
-## Pruebas Realizadas
-
-### Funcionalidad Normal
-- Descarga correcta de `factura01.pdf` 
-- Descarga correcta de `factura02.pdf` 
-- Descarga correcta de `factura03.pdf` 
-- Descarga correcta de `factura04.pdf` 
-- Descarga correcta de `factura05.pdf` 
-
-### Pruebas de Exploit
-- `../secreto.txt` → Descarga archivo sensible
-- `../app.py` → Descarga código fuente
-- `../../requirements.txt` → Descarga dependencias
