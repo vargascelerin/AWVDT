@@ -18,9 +18,13 @@ Esta es una aplicación Flask diseñada *intencionalmente con una vulnerabilidad
 
 bash
 #### Clonar repositorio o descargar el proyecto
-``` git clone https://github.com/vargascelerin/AWVDT.git```
+```bash
+git clone https://github.com/vargascelerin/AWVDT.git
+```
 #### Acceder a ruta
-``` cd flask-vulnerable-app ```
+```bash
+cd flask-vulnerable-app
+```
 
 
 #### Instalar dependencias
@@ -28,35 +32,54 @@ bash
 *NOTA:* Lo más recomendable es usar un entorno virtual, se puede crear de la siguiente manera:
 *WINDOWS*
 1. Creación de entorno virtual
-```python -m venv C:\path-to-venv\```
-2. Activar entorno virtual
+```bash
+python -m venv C:\path-to-venv\
+```
+3. Activar entorno virtual
   Usando ejecutable
-``` C:\> \path-to-venv\Scripts\activate.bat ```
+```bash
+C:\> \path-to-venv\Scripts\activate.bat
+```
   Usando la PowerShell
-``` PS C:\> \path-to-venv\Scripts\activate.ps1 ```
-3. Desactivar (dejar activado en este caso)
+```bash
+PS C:\> \path-to-venv\Scripts\activate.ps1
+```
+5. Desactivar (dejar activado en este caso)
 ``` deactivate ```
 *LINUX*
 1. Creación de entorno virtual
-```python3 -m venv \path-to-venv\```
-2. Activar entorno virtual
-```source \path-to-venv\bin\activate ```
-3. Desactivar (dejar activado en este caso)
-```deactivate ```
+```bash
+python3 -m venv \path-to-venv\
+```
+3. Activar entorno virtual
+```bash
+source \path-to-venv\bin\activate
+```
+5. Desactivar (dejar activado en este caso)
+```bash
+deactivate
+```
 
 ##### Dependencias
 - *Flask*
-``` pip install flask ```
+```bash
+pip install flask
+```
 
 ### Ejecutar la aplicación
 
 En windows
-```python app.py```
+```bash
+python app.py
+```
 
 En linux
-```python3 app.py```
+```bash
+python3 app.py
+```
 
 La aplicación estará disponible en http://localhost:5000
+
 [Ver página web](https://localhost:5000)
 
 
