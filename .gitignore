@@ -1,0 +1,4 @@
+.venv/
+venv/
+
+app_seguro.py
