@@ -32,57 +32,21 @@ return send_file(file_path)
 - Permite el uso de secuencias ../ para navegar hacia arriba en el sistema de archivos
 
 ### 3. *Estructura de Archivos*
-<h1>Propuesta de diseño de la aplicacion vulnerable (es un ecommerce de tech)</h1>
 
-<pre style="white-space: pre; overflow-x: auto; font-family: monospace;">
-tech-shop/
-│
-├── app.py                          # ⚠️ Aplicación Flask VULNERABLE 
-├── app_seguro.py                   # ✅ Aplicación Flask parchada
-├── secreto.txt                     # 🔐 Archivo sensible para testing
-├── requirements.txt                # 📦 Dependencias Python
-├── .env.example                    # 🔧 Variables de entorno ejemplo
-│
-├── templates/                      # 📄 Templates HTML 
-│   ├── base.html                   # Base template con navbar/footer 
-│   ├── index.html                  # Página principal/home 
-│   └── profile.html                # Perfil + descarga de facturas 
-│
-├── static/                         # 🎨 Archivos estáticos
-│   ├── css/
-│   │   └── styles.css              # Estilos CSS principales 
-│   │
-│   ├── js/
-│   │   ├── main.js                 # JavaScript global + productos 
-│   │   └── profile.js              # JavaScript de perfil/descargas 
-│   │
-│   └── images/
-│       └── products/               # Imágenes de productos
-│           ├── Laptop.jpg          
-│           ├── Iphone.jpg       
-│           ├── audifonos.jpg      
-│           ├── monitor.jpg          
-│           ├── mouse.jpg           
-│           └── mac.jpg          
-│
-├── invoices/                       # 📄 Facturas legítimas 
-│   ├── factura01.pdf               # Factura de ejemplo 1
-│   ├── factura02.pdf               # Factura de ejemplo 2
-│   ├── factura03.pdf               # Factura de ejemplo 3
-│   ├── factura04.pdf               # Factura de ejemplo 4
-│   └── factura05.pdf               # Factura de ejemplo 5
-│
-└── docs/                           # 📚 Documentación del proyecto
-    ├── README                      # Instrucciones generales
-    └── PETESTING                   # Explicación de Directory Traversal
 
-    Word 
-    ├── PENTESTING                  # Pruebas manuales
-    ├── EXPLOTACION                 # Explotación automatizada 
-    ├── CORRECTIVOS                 # Soluciones aplicadas 
-    ├── RETEST                      # Re-testing post-corrección
-    └── INFORME_FINAL               # Reporte completo del proyecto
-</pre>
+flask-vulnerable-app/
+├── app.py                 # Backend Flask
+├── secreto.txt            # Archivo "secreto" en raíz (para probar exploit)
+├── invoices/              # Carpeta con facturas legítimas
+│   ├── factura01.pdf
+│   ├── factura02.pdf
+│   ├── factura03.pdf
+│   ├── factura04.pdf
+│   └── factura05.pdf
+├── templates/
+│   └── index.html         # Frontend (opcional)
+└── README.md
+
 
 ## 🚀 Instalación y Uso
 
@@ -183,3 +147,93 @@ Este proyecto demuestra:
 ---
 
 *Recuerda*: Esta aplicación es vulnerable por diseño. Úsala solo en entornos de prueba aislados y nunca en producción.
+
+# Issue #4 - Página de Perfil con Descarga de Facturas Vulnerable
+
+## Descripción del Issue
+
+Crear la página de perfil del usuario con una sección de descarga de facturas que expone intencionalmente la vulnerabilidad de **Directory Traversal** con fines educativos.
+
+## Objetivo
+
+Implementar una interfaz funcional e intuitiva que permita a los usuarios descargar sus facturas, pero que contenga una vulnerabilidad explotable para demostrar cómo un atacante puede acceder a archivos fuera del directorio permitido.
+
+## Tareas Completadas
+
+### 1. **HTML en `profile.html`**
+
+- Información de usuario simulada/estática (nombre, email, fecha de membresía)
+- Tabla completa con las 5 facturas disponibles
+- Input de texto para nombre de archivo personalizado
+- Botón de descarga funcional
+- Interfaz responsive y profesional
+
+### 2. **JavaScript en `static/js/profile.js`**
+
+- Event listener del botón de descarga
+- Construcción de URL vulnerable: `/download-invoice?file=` + input del usuario
+- Apertura de URL en nueva pestaña para descargar
+- Validación básica de input vacío
+- Soporte para descarga con tecla Enter
+- Comentarios detallados con pistas del exploit
+
+### 3. **CSS en `static/css/styles.css`**
+
+- Estilos para información de usuario
+- Tabla de facturas profesional y responsive
+- Sección de descarga personalizada destacada
+- Efectos hover y transiciones
+- Diseño mobile-friendly
+
+## Vulnerabilidad Implementada
+
+### **Directory Traversal (Path Traversal)**
+
+El código es **intencionalmente vulnerable** para demostrar esta vulnerabilidad común:
+
+**Código Vulnerable en `profile.js`:**
+```javascript
+// VULNERABLE: Construye URL directamente sin validación
+const downloadUrl = `/download-invoice?file=${encodeURIComponent(filename)}`;
+window.open(downloadUrl, '_blank');
+```
+
+**¿Por qué es vulnerable?**
+- No valida que el archivo esté dentro del directorio `invoices/`
+- No sanitiza el input del usuario
+- Permite secuencias `../` para navegar hacia arriba en directorios
+
+### **Cómo Explotar la Vulnerabilidad**
+
+#### Uso Normal (Esperado):
+
+Input: factura01.pdf
+URL: /download-invoice?file=factura01.pdf
+Resultado: Descarga invoices/factura01.pdf
+
+#### Exploit - Directory Traversal:
+
+Input: ../secreto.txt
+URL: /download-invoice?file=../secreto.txt
+Resultado: Descarga el archivo secreto.txt de la raíz
+
+#### Otros Exploits Posibles:
+
+../app.py                    → Descarga el código fuente
+../../requirements.txt       → Descarga dependencias
+../templates/base.html       → Descarga templates
+
+
+## Pruebas Realizadas
+
+### Funcionalidad Normal
+- Descarga correcta de `factura01.pdf` 
+- Descarga correcta de `factura02.pdf` 
+- Descarga correcta de `factura03.pdf` 
+- Descarga correcta de `factura04.pdf` 
+- Descarga correcta de `factura05.pdf` 
+
+### Pruebas de Exploit
+- `../secreto.txt` → Descarga archivo sensible
+- `../app.py` → Descarga código fuente
+- `../../requirements.txt` → Descarga dependencias
