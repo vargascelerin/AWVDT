@@ -6,12 +6,13 @@
 ```python
 file_path = os.path.join('invoices/', filename)
 return send_file(file_path, as_attachment=True)
+```
 Usa la entrada del usuario directamente en os.path.join sin normalizar ni verificar
 → permite ../ y rutas absolutas (Directory Traversal).
 
-app_seguro.py (seguro):
+**`app_seguro.py` (seguro):**
 
-python
+```python
 Copiar código
 cleaned = secure_filename(filename)
 requested_path = os.path.realpath(os.path.join('invoices', cleaned))
@@ -19,6 +20,7 @@ invoices_real = os.path.realpath('invoices')
 if not (requested_path == invoices_real or requested_path.startswith(invoices_real + os.sep)):
     return jsonify({"error": "Access denied"}), 403
 return send_file(requested_path, as_attachment=True)
+```
 Normaliza (secure_filename), resuelve (realpath) y comprueba que la ruta resuelta está dentro de invoices/
 → impide traversal.
 
