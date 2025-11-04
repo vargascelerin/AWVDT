@@ -8,6 +8,33 @@ Esta es una aplicación Flask diseñada *intencionalmente con una vulnerabilidad
 
 *Esta aplicación contiene vulnerabilidades intencionales y NO debe usarse en producción.* Es únicamente para propósitos educativos y de demostración de seguridad.
 
+## 📚 Conceptos de Seguridad
+
+### ¿Qué es Directory Traversal?
+Una vulnerabilidad que permite a atacantes acceder a archivos y directorios fuera del directorio raíz previsto mediante secuencias como ../ (punto punto barra).
+
+### Impacto Real
+- Robo de archivos de configuración (config.php, .env)
+- Acceso a credenciales y claves API
+- Lectura de código fuente
+- Acceso a archivos del sistema (/etc/passwd, /etc/shadow)
+
+### Prevención
+1. *Sanitización*: Usa secure_filename() de Werkzeug
+2. *Validación*: Verifica que el path esté dentro del directorio permitido
+3. *Lista blanca*: Solo permite nombres de archivo predefinidos
+4. *Permisos*: Configura permisos de archivos correctamente
+5. *Never trust user input*: Siempre valida y sanitiza entrada del usuario
+
+## 🎓 Propósito Educativo
+
+Este proyecto demuestra:
+- Cómo se ve una vulnerabilidad real
+- Por qué la validación de entrada es crítica
+- Técnicas de exploit comunes
+- Cómo implementar la versión segura
+
+
 ## 🚀 Instalación y Uso
 
 ### Requisitos
@@ -88,23 +115,55 @@ La aplicación estará disponible en http://localhost:5000
 
 ### *Estructura de Archivos*
 
-```
+```bash
 flask-vulnerable-app/
-├── app.py                 # Backend Flask
-├── secreto.txt            # Archivo "secreto" en raíz (para probar exploit)
-├── invoices/              # Carpeta con facturas legítimas
-│   ├── factura01.pdf
-│   ├── factura02.pdf
-│   ├── factura03.pdf
-│   ├── factura04.pdf
-│   └── factura05.pdf
-├── templates/
-│   └── index.html         # Frontend (opcional)
-└── README.md
+├── app.py
+├── docs
+│   ├── CORRECTIVOS.md
+│   ├── EXPLOTACION.md
+│   ├── image-1.png
+│   ├── image-2.png
+│   ├── image-3.png
+│   ├── image-4.png
+│   ├── image-5.png
+│   ├── image-6.png
+│   ├── image-7.png
+│   ├── image.png
+│   ├── retest-1.png
+│   ├── retest-2.png
+│   ├── retest-3.png
+│   ├── retest-4.png
+│   ├── RETEST.md
+│   └── retest.png
+├── invoices
+│   ├── factura01.pdf
+│   ├── factura02.pdf
+│   ├── factura03.pdf
+│   ├── factura04.pdf
+│   └── factura05.pdf
+├── requirements.txt
+├── secreto.txt
+├── static
+│   ├── css
+│   │   └── styles.css
+│   └── js
+│       ├── main.js
+│       └── profile.js
+└── templates
+    ├── base.html
+    ├── index.html
+    └── profile.html
 ```
 
 
 ## 🎯 Lo que hicimos
+### 📝 API Endpoints
+
+| Método | Endpoint | Descripción |
+|--------|----------|-------------|
+| GET | / | Página principal |
+| GET | /api/products | Lista de 6 productos (JSON) |
+| GET | /download-invoice?file=X | *VULNERABLE* - Descarga archivo |
 
 ### 1. *Backend Flask con Endpoints Básicos*
 - GET / - Página principal (renderiza index.html)
@@ -115,9 +174,9 @@ flask-vulnerable-app/
 
 El endpoint /download-invoice está intencionalmente mal implementado:
 
-python
-# CÓDIGO VULNERABLE - NO USAR EN PRODUCCIÓN
-```javascript
+
+# CÓDIGO VULNERABLE
+```python
 filename = request.args.get('file', '')
 file_path = os.path.join('invoices/', filename)
 return send_file(file_path)
@@ -196,42 +255,6 @@ Resultado: Descarga el archivo secreto.txt de la raíz
 - No sanitiza el input del usuario
 - Permite secuencias `../` para navegar hacia arriba en directorios
 
-
-
-
-## 📚 Conceptos de Seguridad
-
-### ¿Qué es Directory Traversal?
-Una vulnerabilidad que permite a atacantes acceder a archivos y directorios fuera del directorio raíz previsto mediante secuencias como ../ (punto punto barra).
-
-### Impacto Real
-- Robo de archivos de configuración (config.php, .env)
-- Acceso a credenciales y claves API
-- Lectura de código fuente
-- Acceso a archivos del sistema (/etc/passwd, /etc/shadow)
-
-### Prevención
-1. *Sanitización*: Usa secure_filename() de Werkzeug
-2. *Validación*: Verifica que el path esté dentro del directorio permitido
-3. *Lista blanca*: Solo permite nombres de archivo predefinidos
-4. *Permisos*: Configura permisos de archivos correctamente
-5. *Never trust user input*: Siempre valida y sanitiza entrada del usuario
-
-## 🎓 Propósito Educativo
-
-Este proyecto demuestra:
-- Cómo se ve una vulnerabilidad real
-- Por qué la validación de entrada es crítica
-- Técnicas de exploit comunes
-- Cómo implementar la versión segura
-
-## 📝 API Endpoints
-
-| Método | Endpoint | Descripción |
-|--------|----------|-------------|
-| GET | / | Página principal |
-| GET | /api/products | Lista de 6 productos (JSON) |
-| GET | /download-invoice?file=X | *VULNERABLE* - Descarga archivo |
 
 ## 🔗 Referencias
 
