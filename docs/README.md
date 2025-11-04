@@ -30,7 +30,8 @@ cd flask-vulnerable-app
 #### Instalar dependencias
 ##### Entorno virtual
 *NOTA:* Lo más recomendable es usar un entorno virtual, se puede crear de la siguiente manera:
-*WINDOWS*
+
+🪟**WINDOWS**
 1. Creación de entorno virtual
 ```bash
 python -m venv C:\path-to-venv\
@@ -48,7 +49,7 @@ PS C:\> \path-to-venv\Scripts\activate.ps1
 ```bash
 deactivate
 ```
-*LINUX*
+🐧**LINUX**
 1. Creación de entorno virtual
 ```bash
 python3 -m venv \path-to-venv\
